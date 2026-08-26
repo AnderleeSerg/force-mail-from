@@ -1,34 +1,35 @@
 <?php
 /**
  * Plugin Name: Force Mail From
- * Description: WordPress всегда отправляет письма от ящика домена сайта.
- *              Нужен на Hosting Ukraine (ukraine.com.ua / adm.tools) и похожих
- *              хостингах с ошибкой «Некорректный заголовок From» / Invalid From.
+ * Description: Stops Hosting Ukraine “Invalid From” blocks. WordPress sends from a mailbox on the site domain.
  *
- * УСТАНОВКА
- *   Скопируйте этот файл в:
- *     wp-content/mu-plugins/force-mail-from.php
- *   Папку mu-plugins создайте, если её нет.
- *   Плагин подхватится сам — активировать в админке не нужно.
- *   Если сайтов несколько — положите ОДИН И ТОТ ЖЕ файл на каждый WordPress.
+ * Full guide (EN / UK / RU): https://github.com/AnderleeSerg/force-mail-from
  *
- * ЧТО ПОМЕНЯТЬ В ЭТОМ ФАЙЛЕ
- *   1) FORCE_MAIL_USER — локальная часть ящика по умолчанию.
- *      'admin'  → письма от admin@ваш-домен.com
- *      'info'   → письма от info@ваш-домен.com
- *      'noreply'→ письма от noreply@ваш-домен.com
+ * --- English (4 steps) ---
+ * 1. Create a mailbox on the site domain, e.g. admin@mysite.com
+ * 2. My sites → site → Settings → Outgoing mail → choose that mailbox → Save
+ * 3. Copy this file to:  wp-content/mu-plugins/force-mail-from.php
+ *    Create the mu-plugins folder if needed. Do not activate it under Plugins.
+ * 4. Change the line FORCE_MAIL_USER only if the mailbox is not admin@
+ *    info@mysite.com → define( 'FORCE_MAIL_USER', 'info' );
  *
- *   2) FORCE_MAIL_MAP — только исключения, когда ящик НЕ равен
- *      FORCE_MAIL_USER@домен-сайта (info@, office@, чужой домен и т.п.).
- *      Если все ящики вида admin@домен — карту оставьте пустой.
+ * --- Українська (4 кроки) ---
+ * 1. Створіть скриньку на домені сайта, напр. admin@mysite.com
+ * 2. Мої сайти → сайт → Налаштування → Вихідна пошта → оберіть скриньку → Зберегти
+ * 3. Скопіюйте цей файл у:  wp-content/mu-plugins/force-mail-from.php
+ *    Теку mu-plugins створіть, якщо її немає. У «Плагіни» активувати не треба.
+ * 4. Рядок FORCE_MAIL_USER змінюйте, лише якщо скринька не admin@
+ *    info@mysite.com → define( 'FORCE_MAIL_USER', 'info' );
  *
- * В ПАНЕЛИ ХОСТИНГА (обязательно, иначе правило From снова не выполнится)
- *   1. Почта → создать ящик на том же домене, что и сайт.
- *   2. Мои сайты → сайт → Настройки → «Исходящая почта» → выбрать этот ящик.
- *   Ящик в панели и адрес в этом файле должны совпадать.
+ * --- Русский (4 шага) ---
+ * 1. Создайте ящик на домене сайта, напр. admin@mysite.com
+ * 2. Мои сайты → сайт → Настройки → Исходящая почта → выберите ящик → Сохранить
+ * 3. Скопируйте этот файл в:  wp-content/mu-plugins/force-mail-from.php
+ *    Папку mu-plugins создайте, если её нет. В «Плагины» активировать не нужно.
+ * 4. Строку FORCE_MAIL_USER меняйте, только если ящик не admin@
+ *    info@mysite.com → define( 'FORCE_MAIL_USER', 'info' );
  *
- * Wiki хостинга:
- *   https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/
+ * Wiki: https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -36,17 +37,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! defined( 'FORCE_MAIL_USER' ) ) {
-    define( 'FORCE_MAIL_USER', 'admin' ); // ← при необходимости замените
+    define( 'FORCE_MAIL_USER', 'admin' ); // change only if mailbox is not admin@
 }
 
 /*
- * Исключения: 'домен-сайта-без-www' => 'полный@ящик'.
- * Примеры (раскомментируйте и подставьте свои):
+ * Extra map — only if the mailbox is NOT prefix@this-site-domain.
  *
  * $GLOBALS['FORCE_MAIL_MAP'] = array(
- *     'example.com'     => 'info@example.com',
- *     'shop.example.com'=> 'sales@example.com',
- *     'old-site.com'    => 'admin@main-site.com', // нет своего ящика
+ *     'shop.com' => 'sales@shop.com',
+ *     'old.com'  => 'admin@main.com',
  * );
  */
 $GLOBALS['FORCE_MAIL_MAP'] = isset( $GLOBALS['FORCE_MAIL_MAP'] ) ? $GLOBALS['FORCE_MAIL_MAP'] : array();
@@ -62,7 +61,6 @@ add_action( 'phpmailer_init', function ( $phpmailer ) {
         $force = FORCE_MAIL_USER . '@' . $domain;
     }
 
-    // Чужой From (Gmail посетителя и т.п.) сохраняем как Reply-To.
     if ( $phpmailer->From && stripos( $phpmailer->From, '@' . $domain ) === false ) {
         $reply_name = $phpmailer->FromName ? $phpmailer->FromName : get_bloginfo( 'name' );
         $phpmailer->addReplyTo( $phpmailer->From, $reply_name );
