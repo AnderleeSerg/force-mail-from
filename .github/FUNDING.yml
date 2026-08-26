@@ -1,0 +1,4 @@
+# GitHub shows a Sponsor button on the repo page.
+# https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository
+custom:
+  - https://send.monobank.ua/jar/2Y8epr7u5T
