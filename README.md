@@ -4,83 +4,72 @@
 
 [![Support / Donate](https://img.shields.io/badge/Support%20%2F%20Donate-Monobank-e11d48)](https://send.monobank.ua/jar/2Y8epr7u5T)
 
-**A WordPress plugin that stops hosting emails about an “Invalid From” / incorrect From header.**
+## What this is
 
-If you use [Hosting Ukraine](https://www.ukraine.com.ua/) (panel: [adm.tools](https://adm.tools/)) and keep getting notices that outgoing mail from your site was **blocked** because of a bad `From` header — this file is for that.
+Hosting Ukraine sometimes emails you that a letter from the site was **blocked**: “Invalid From header”.
 
-Typical hosting message:
+That happens when WordPress sends mail as Gmail (or another foreign address). The host only allows a mailbox that exists **on your hosting**, on the **same domain as the site**.
 
-> Outgoing message blocked  
-> Invalid From header  
-> Некорректный заголовок From
+This file makes WordPress send from that mailbox. The plugin is free.
 
-WordPress, WooCommerce, Contact Form 7, or a security plugin often send mail as `you@gmail.com` or as a non-existent `wordpress@yoursite.com`. The host rejects that: the sender must be a **mailbox that actually exists on the same hosting account**.
+Hosting wiki: https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/
 
-This plugin forces WordPress to send from a mailbox on the site’s own domain. If a contact form used a visitor’s Gmail address, it is moved to **Reply-To**, so you can still reply.
+## What to do (4 steps)
 
-Hosting wiki: [Invalid From header](https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/)
+### 1. Create a mailbox
 
-## Download
+In the hosting panel ([adm.tools](https://adm.tools/)): **Mail → Mailboxes → create**.
 
-- Plugin file: [`force-mail-from.php`](force-mail-from.php)
-- Or the green **Code → Download ZIP** button
+Example: if the site is `mysite.com`, create `admin@mysite.com`.  
+Write down the password. You do not have to read this mailbox every day — it is needed so the host **allows sending**.
 
-## Who it is for
+### 2. Turn on sending for the site
 
-- WordPress on Hosting Ukraine and similar hosts with the same `From` rule
-- Several sites on one account — the same file on every WordPress install
+**Hosting → My sites → your site → Settings.**
 
-**You do not need it** if mail already goes out through external SMTP (WP Mail SMTP + Gmail, SendPulse, etc.).  
-**It will not help** OpenCart or custom PHP — WordPress only.
+Find **Outgoing mail**, pick the mailbox from step 1, click **Save**.
 
-## Install
+Without this step the file will not help.
 
-1. Create a mailbox on the site domain, e.g. `admin@your-site.com`.
-2. **My sites → the site → Settings → “Outgoing mail”** — select that mailbox and save.
-3. Copy `force-mail-from.php` to:
+### 3. Put the file on the site
 
-   ```text
-   wp-content/mu-plugins/force-mail-from.php
-   ```
+Download [`force-mail-from.php`](force-mail-from.php) (or **Code → Download ZIP**).
 
-   Create the `mu-plugins` folder if it is missing.  
-   You do not activate anything under “Plugins”: mu-plugins load automatically.
+On the server, in the site files, open `wp-content`.  
+If there is no folder `mu-plugins` — create it.  
+Put the file here:
 
-4. If the mailbox is not `admin@domain`, change one line in the file:
-
-   ```php
-   define( 'FORCE_MAIL_USER', 'admin' );
-   ```
-
-   `info` → mail from `info@your-site.com`. The domain is taken from WordPress.
-
-## Several sites and exceptions
-
-One file for all sites: `admin` on `a.com` becomes `admin@a.com`, on `b.com` — `admin@b.com`.
-
-If the mailbox name is different (`info@`, `sales@`) or a site has no mailbox of its own, fill in the map:
-
-```php
-$GLOBALS['FORCE_MAIL_MAP'] = array(
-    'shop.com' => 'sales@shop.com',
-    'old.com'  => 'admin@main.com',
-);
+```text
+wp-content/mu-plugins/force-mail-from.php
 ```
 
-The mailbox in the panel and the address in the file must match. Otherwise the host will block the message again.
+Do not look for it under “Plugins” in WordPress. This kind of file turns on by itself.
 
-## How to check
+If you have several WordPress sites — copy the **same** file to each of them.
 
-1. Send a test email (a form, “forgot password”, a security report).
-2. The sender should be `you@your-domain`, not Gmail.
-3. The next day you should not get a hosting notice about an invalid `From`.
+### 4. Only if the mailbox is not admin@
+
+Open the file in a text editor. Find this line:
+
+```php
+define( 'FORCE_MAIL_USER', 'admin' );
+```
+
+If the mailbox is `info@mysite.com` — replace `admin` with `info`.  
+If it is `admin@mysite.com` — change nothing.
+
+## How to know it worked
+
+Send any test from the site (a form, “forgot password”).  
+The sender should be `admin@your-domain`, not Gmail.  
+The next day the host should not email you about a bad From header.
 
 ## Support / Donate
 
-The plugin is free. If it stopped the Invalid From emails, you can say thanks via a Monobank jar:
+If this helped, you can say thanks:
 
-**[Support / Donate](https://send.monobank.ua/jar/2Y8epr7u5T)**
+**[Support / Donate (Monobank)](https://send.monobank.ua/jar/2Y8epr7u5T)**
 
 ## License
 
-MIT — you may copy, change, and share it.
+MIT.
