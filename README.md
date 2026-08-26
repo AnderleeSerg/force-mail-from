@@ -4,71 +4,69 @@
 
 [![Support / Donate](https://img.shields.io/badge/Support%20%2F%20Donate-Monobank-e11d48)](https://send.monobank.ua/jar/2Y8epr7u5T)
 
-## What this is
+The host emailed you that a letter from the site was **blocked** (“Invalid From”).  
+This free file fixes that for WordPress on [Hosting Ukraine](https://www.ukraine.com.ua/) ([adm.tools](https://adm.tools/)).
 
-Hosting Ukraine sometimes emails you that a letter from the site was **blocked**: “Invalid From header”.
+You do not need to be a programmer. Follow the three steps below.
 
-That happens when WordPress sends mail as Gmail (or another foreign address). The host only allows a mailbox that exists **on your hosting**, on the **same domain as the site**.
+## 1. Create a mailbox (if you do not have one yet)
 
-This file makes WordPress send from that mailbox. The plugin is free.
+In **adm.tools**: **Mail → Mailboxes → Create**.
 
-Hosting wiki: https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/
+Name it after the site, for example `admin@mysite.com` if the site is `mysite.com`.
 
-## What to do (4 steps)
+Save the password. You do not have to read this mailbox every day. It exists so the host **allows sending**.
 
-### 1. Create a mailbox
-
-In the hosting panel ([adm.tools](https://adm.tools/)): **Mail → Mailboxes → create**.
-
-Example: if the site is `mysite.com`, create `admin@mysite.com`.  
-Write down the password. You do not have to read this mailbox every day — it is needed so the host **allows sending**.
-
-### 2. Turn on sending for the site
+## 2. Tell the site to send from that mailbox
 
 **Hosting → My sites → your site → Settings.**
 
-Find **Outgoing mail**, pick the mailbox from step 1, click **Save**.
+Find **Outgoing mail**, choose `admin@mysite.com`, click **Save**.
 
-Without this step the file will not help.
+If you skip this, the file will not help.
 
-### 3. Put the file on the site
+## 3. Upload the file
 
-Download [`force-mail-from.php`](force-mail-from.php) (or **Code → Download ZIP**).
+Download [`force-mail-from.php`](force-mail-from.php)  
+(or the green button **Code → Download ZIP**, then take the `.php` file from the archive).
 
-On the server, in the site files, open `wp-content`.  
-If there is no folder `mu-plugins` — create it.  
-Put the file here:
+In **adm.tools** open **File manager**. Go to your site folder, then:
+
+`www` → `wp-content`
+
+If there is no folder `mu-plugins` — create it (**New folder**).  
+Open `mu-plugins` and **upload** `force-mail-from.php` there.
+
+The path must look like this:
 
 ```text
 wp-content/mu-plugins/force-mail-from.php
 ```
 
-Do not look for it under “Plugins” in WordPress. This kind of file turns on by itself.
+Do not search for this file under **Plugins** in WordPress. It turns on by itself.
 
-If you have several WordPress sites — copy the **same** file to each of them.
+Several WordPress sites? Upload the **same** file the same way on each one.
 
-### 4. Only if the mailbox is not admin@
+## If your mailbox is not admin@
 
-Open the file in a text editor. Find this line:
+Only then open the file in Notepad. Find:
 
 ```php
 define( 'FORCE_MAIL_USER', 'admin' );
 ```
 
-If the mailbox is `info@mysite.com` — replace `admin` with `info`.  
-If it is `admin@mysite.com` — change nothing.
+If the mailbox is `info@mysite.com`, change `admin` to `info`.  
+If it is already `admin@...` — change nothing.
 
-## How to know it worked
+## Did it work?
 
-Send any test from the site (a form, “forgot password”).  
-The sender should be `admin@your-domain`, not Gmail.  
-The next day the host should not email you about a bad From header.
+Send a test from the site (a form or “forgot password”).  
+The sender should be your site mailbox, not Gmail.  
+The next day the host should not email you about a blocked From.
 
 ## Support / Donate
 
-If this helped, you can say thanks:
-
-**[Support / Donate (Monobank)](https://send.monobank.ua/jar/2Y8epr7u5T)**
+**[Monobank jar](https://send.monobank.ua/jar/2Y8epr7u5T)**
 
 ## License
 

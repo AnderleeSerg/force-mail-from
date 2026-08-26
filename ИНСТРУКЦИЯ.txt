@@ -1,66 +1,61 @@
-Force Mail From
-===============
+Force Mail From — for site administrators
+=========================================
 https://github.com/AnderleeSerg/force-mail-from
 
-EN: README.md
-UK: README.uk.md
-RU: README.ru.md
-
-Donate: https://send.monobank.ua/jar/2Y8epr7u5T
+The host blocked mail from the site (Invalid From).
+This file is for WordPress on Hosting Ukraine (adm.tools).
+You do not need to be a programmer.
 
 
-ENGLISH — 4 steps
------------------
-1. Create a mailbox on the site domain, e.g. admin@mysite.com
-   (Mail → Mailboxes in adm.tools)
+ENGLISH
+-------
+1. Mail → Mailboxes → create admin@mysite.com
 
 2. My sites → your site → Settings → Outgoing mail
    → choose that mailbox → Save
-   Without this step the file will not help.
 
-3. Put force-mail-from.php here:
-     wp-content/mu-plugins/force-mail-from.php
-   Create the mu-plugins folder if it is missing.
-   You do not activate it under WordPress “Plugins”.
+3. File manager → site folder → www → wp-content
+   Create folder mu-plugins if it is missing.
+   Upload force-mail-from.php into mu-plugins.
 
-4. Open the file only if the mailbox is NOT admin@
-   Find:  define( 'FORCE_MAIL_USER', 'admin' );
-   For info@mysite.com change admin to info.
+   Do not look for it under Plugins in WordPress. It turns on by itself.
+
+4. Open the file in Notepad only if the mailbox is NOT admin@
+   Change the word admin to info if the mailbox is info@...
 
 
-УКРАЇНСЬКА — 4 кроки
---------------------
-1. Створіть скриньку на домені сайта, напр. admin@mysite.com
-   (Пошта → Поштові скриньки в adm.tools)
+УКРАЇНСЬКА
+----------
+1. Пошта → Поштові скриньки → створіть admin@mysite.com
 
 2. Мої сайти → ваш сайт → Налаштування → Вихідна пошта
    → оберіть цю скриньку → Зберегти
-   Без цього кроку файл не допоможе.
 
-3. Покладіть force-mail-from.php сюди:
-     wp-content/mu-plugins/force-mail-from.php
-   Теку mu-plugins створіть, якщо її немає.
-   У WordPress у «Плагіни» активувати не треба.
+3. Файл-менеджер → тека сайта → www → wp-content
+   Створіть теку mu-plugins, якщо її немає.
+   Завантажте force-mail-from.php у mu-plugins.
 
-4. Відкрийте файл, лише якщо скринька НЕ admin@
-   Знайдіть:  define( 'FORCE_MAIL_USER', 'admin' );
-   Для info@mysite.com замініть admin на info.
+   У WordPress у «Плагіни» файл шукати не треба. Він вмикається сам.
+
+4. Відкрийте файл у блокноті, лише якщо скринька НЕ admin@
+   Замініть слово admin на info, якщо скринька info@...
 
 
-РУССКИЙ — 4 шага
-----------------
-1. Создайте ящик на домене сайта, напр. admin@mysite.com
-   (Почта → Почтовые ящики в adm.tools)
+РУССКИЙ
+-------
+1. Почта → Почтовые ящики → создайте admin@mysite.com
 
 2. Мои сайты → ваш сайт → Настройки → Исходящая почта
    → выберите этот ящик → Сохранить
-   Без этого шага файл не поможет.
 
-3. Положите force-mail-from.php сюда:
-     wp-content/mu-plugins/force-mail-from.php
-   Папку mu-plugins создайте, если её нет.
-   В WordPress в «Плагины» активировать не нужно.
+3. Файл-менеджер → папка сайта → www → wp-content
+   Создайте папку mu-plugins, если её нет.
+   Загрузите force-mail-from.php в mu-plugins.
 
-4. Откройте файл, только если ящик НЕ admin@
-   Найдите:  define( 'FORCE_MAIL_USER', 'admin' );
-   Для info@mysite.com замените admin на info.
+   В WordPress в «Плагины» файл искать не нужно. Он включается сам.
+
+4. Откройте файл в блокноте, только если ящик НЕ admin@
+   Замените слово admin на info, если ящик info@...
+
+
+Donate: https://send.monobank.ua/jar/2Y8epr7u5T
