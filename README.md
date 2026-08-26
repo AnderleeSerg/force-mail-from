@@ -1,62 +1,64 @@
 # Force Mail From
 
-[![Підтримати / Donate](https://img.shields.io/badge/Підтримати%20%2F%20Donate-Monobank-e11d48)](https://send.monobank.ua/jar/2Y8epr7u5T)
+**[English](README.md)** · **[Українська](README.uk.md)** · **[Русский](README.ru.md)**
 
-**WordPress-плагин, который останавливает письма хостинга про ошибку «Некорректный заголовок From» (Invalid From).**
+[![Support / Donate](https://img.shields.io/badge/Support%20%2F%20Donate-Monobank-e11d48)](https://send.monobank.ua/jar/2Y8epr7u5T)
 
-Если вы на [Hosting Ukraine](https://www.ukraine.com.ua/) (панель [adm.tools](https://adm.tools/)) и вам на почту регулярно приходит уведомление, что исходящее письмо с сайта **заблокировано** из‑за неправильного `From` — этот файл как раз про это.
+**A WordPress plugin that stops hosting emails about an “Invalid From” / incorrect From header.**
 
-Типичный текст от хостинга:
+If you use [Hosting Ukraine](https://www.ukraine.com.ua/) (panel: [adm.tools](https://adm.tools/)) and keep getting notices that outgoing mail from your site was **blocked** because of a bad `From` header — this file is for that.
 
-> Исходящее письмо заблокировано  
-> Некорректный заголовок From  
-> Invalid From header
+Typical hosting message:
 
-Обычно WordPress, WooCommerce, Contact Form 7 или плагин безопасности пытаются отправить письмо от `ваш@gmail.com` или от несуществующего `wordpress@сайт.com`. Хостинг такое не пропускает: отправитель должен быть **ящиком, который создан на том же аккаунте**.
+> Outgoing message blocked  
+> Invalid From header  
+> Некорректный заголовок From
 
-Плагин заставляет WordPress всегда слать от ящика домена сайта. Если в форме был Gmail посетителя, он уходит в **Reply-To** — ему по-прежнему можно ответить.
+WordPress, WooCommerce, Contact Form 7, or a security plugin often send mail as `you@gmail.com` or as a non-existent `wordpress@yoursite.com`. The host rejects that: the sender must be a **mailbox that actually exists on the same hosting account**.
 
-Документация хостинга: [Некорректный заголовок From](https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/)
+This plugin forces WordPress to send from a mailbox on the site’s own domain. If a contact form used a visitor’s Gmail address, it is moved to **Reply-To**, so you can still reply.
 
-## Скачать
+Hosting wiki: [Invalid From header](https://www.ukraine.com.ua/wiki/mail/issues/invalid-from/)
 
-- Файл плагина: [`force-mail-from.php`](force-mail-from.php)
-- Или архив: зелёная кнопка **Code → Download ZIP**
+## Download
 
-## Кому подходит
+- Plugin file: [`force-mail-from.php`](force-mail-from.php)
+- Or the green **Code → Download ZIP** button
 
-- WordPress на Hosting Ukraine и похожих хостингах с тем же правилом `From`
-- Несколько сайтов на одном аккаунте — один и тот же файл на каждый WordPress
+## Who it is for
 
-**Не нужен**, если почта уже уходит через внешний SMTP (WP Mail SMTP + Gmail, SendPulse и т.п.).  
-**Не поможет** OpenCart и самописным PHP — это только WordPress.
+- WordPress on Hosting Ukraine and similar hosts with the same `From` rule
+- Several sites on one account — the same file on every WordPress install
 
-## Установка
+**You do not need it** if mail already goes out through external SMTP (WP Mail SMTP + Gmail, SendPulse, etc.).  
+**It will not help** OpenCart or custom PHP — WordPress only.
 
-1. Создайте на хостинге почтовый ящик на домене сайта, например `admin@ваш-сайт.com`.
-2. **Мои сайты → сайт → Настройки → «Исходящая почта»** — выберите этот ящик и сохраните.
-3. Скопируйте `force-mail-from.php` в папку:
+## Install
+
+1. Create a mailbox on the site domain, e.g. `admin@your-site.com`.
+2. **My sites → the site → Settings → “Outgoing mail”** — select that mailbox and save.
+3. Copy `force-mail-from.php` to:
 
    ```text
    wp-content/mu-plugins/force-mail-from.php
    ```
 
-   Папки `mu-plugins` может не быть — создайте её.  
-   В разделе «Плагины» активировать ничего не нужно: mu-plugins включаются сами.
+   Create the `mu-plugins` folder if it is missing.  
+   You do not activate anything under “Plugins”: mu-plugins load automatically.
 
-4. Если ящик не `admin@домен`, откройте файл и поменяйте одну строку:
+4. If the mailbox is not `admin@domain`, change one line in the file:
 
    ```php
    define( 'FORCE_MAIL_USER', 'admin' );
    ```
 
-   `info` → письма от `info@ваш-сайт.com`. Домен подставится сам.
+   `info` → mail from `info@your-site.com`. The domain is taken from WordPress.
 
-## Несколько сайтов и исключения
+## Several sites and exceptions
 
-Файл один на все сайты: `admin` на `a.com` даст `admin@a.com`, на `b.com` — `admin@b.com`.
+One file for all sites: `admin` on `a.com` becomes `admin@a.com`, on `b.com` — `admin@b.com`.
 
-Если ящик называется иначе (`info@`, `sales@`) или сайта без своего ящика — заполните карту в файле:
+If the mailbox name is different (`info@`, `sales@`) or a site has no mailbox of its own, fill in the map:
 
 ```php
 $GLOBALS['FORCE_MAIL_MAP'] = array(
@@ -65,20 +67,20 @@ $GLOBALS['FORCE_MAIL_MAP'] = array(
 );
 ```
 
-Ящик в панели и адрес в файле должны совпадать. Иначе хостинг снова заблокирует письмо.
+The mailbox in the panel and the address in the file must match. Otherwise the host will block the message again.
 
-## Как проверить
+## How to check
 
-1. Отправьте тестовое письмо (форма, «забыли пароль», отчёт безопасности).
-2. В письме отправитель — `ваш@домен-сайта`, не Gmail.
-3. На следующий день не должно прийти уведомление хостинга про некорректный `From`.
+1. Send a test email (a form, “forgot password”, a security report).
+2. The sender should be `you@your-domain`, not Gmail.
+3. The next day you should not get a hosting notice about an invalid `From`.
 
-## Підтримати / Donate
+## Support / Donate
 
-Плагін безкоштовний. Якщо він прибрав листи хостинга про Invalid From — можна подякувати банкою Monobank:
+The plugin is free. If it stopped the Invalid From emails, you can say thanks via a Monobank jar:
 
-**[Підтримати / Donate](https://send.monobank.ua/jar/2Y8epr7u5T)**
+**[Support / Donate](https://send.monobank.ua/jar/2Y8epr7u5T)**
 
-## Лицензия
+## License
 
-MIT — можно копировать, менять и выкладывать дальше.
+MIT — you may copy, change, and share it.
