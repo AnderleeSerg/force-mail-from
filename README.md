@@ -58,6 +58,18 @@ define( 'FORCE_MAIL_USER', 'admin' );
 If the mailbox is `info@mysite.com`, change `admin` to `info`.  
 If it is already `admin@...` — change nothing.
 
+## Not WordPress? Do not upload this file
+
+This file works only on **WordPress**. It does nothing on OpenCart, Joomla, Prestashop, or a custom PHP site.
+
+For those, do two things in the panel and in the CMS — **the same existing mailbox** in both places, not Gmail:
+
+1. **adm.tools:** My sites → the site → Settings → **Outgoing mail** → choose e.g. `info@mysite.com` → Save.
+2. **In the CMS** set the store / site email (the From address) to that **same** mailbox.
+
+**OpenCart:** System → Settings → **General** (not the Mail tab) → field **E-Mail**.  
+The Mail tab only chooses Mail vs SMTP. Put Gmail in a mailbox **forward**, not in From.
+
 ## Did it work?
 
 Send a test from the site (a form or “forgot password”).  
